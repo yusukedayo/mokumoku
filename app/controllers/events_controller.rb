@@ -28,6 +28,7 @@ class EventsController < ApplicationController
   end
 
   def create
+    binding.pry
     @event = current_user.events.build(event_params)
     if @event.save
       User.all.find_each do |user|
@@ -60,6 +61,6 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:title, :content, :held_at, :prefecture_id, :thumbnail)
+    params.require(:event).permit(:title, :content, :held_at, :prefecture_id, :thumbnail, :gender_ratio, :number_of_participants)
   end
 end
