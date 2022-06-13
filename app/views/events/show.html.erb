@@ -93,12 +93,16 @@
                               data: { confirm: 'キャンセルします' }
                   %>
                 <% else %>
-                  <%= link_to 'このもくもく会に参加する',
+                  <% if @event.check_participants? %>
+                    <%= link_to "参加する",
                               event_attendance_url(@event),
                               class: 'btn btn-primary',
                               method: :post,
                               data: { confirm: '申し込みます' }
-                  %>
+                    %>
+                  <% else %>
+                    満員です
+                  <% end %>
                 <% end %>
               <% end %>
             <% end %>
