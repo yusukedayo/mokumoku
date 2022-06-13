@@ -110,6 +110,7 @@
           <i class="bi bi-people"></i>
           参加者（<%= @event.attendees.size %>人）
           <%= @event.gender_ratio_i18n %>
+          <%= "人数制限:#{@event.number_of_participants}人" if @event.number_of_participants %>
         </div>
         <div class="card-body">
            <ul class="list-unstyled">
