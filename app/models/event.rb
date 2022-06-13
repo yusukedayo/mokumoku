@@ -21,6 +21,13 @@ class Event < ApplicationRecord
     validates :content
     validates :held_at
   end
+  validate :check_with_half_and_participants
+
+  def check_with_half_and_participants
+    if gender_ratio == "half" && number_of_participants == nil
+      errors.add(:number_of_participants, '男女半々を選択した場合は参加人数を入力してください')
+    end
+  end
 
   def past?
     held_at < Time.current
