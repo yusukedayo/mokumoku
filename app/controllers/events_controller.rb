@@ -28,7 +28,6 @@ class EventsController < ApplicationController
   end
 
   def create
-    binding.pry
     @event = current_user.events.build(event_params)
     if @event.save
       User.all.find_each do |user|
