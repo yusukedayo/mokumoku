@@ -29,4 +29,8 @@ class Event < ApplicationRecord
   def future?
     !past?
   end
+
+  def check 
+    self.gender_ratio != "not_set" && self.user.gender == "not_set"
+  end
 end
