@@ -19,6 +19,7 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
 
   validates :email, uniqueness: true
+  validates :gender, presence: true
 
   enum gender: { not_set: 0, woman: 1, man: 2 }
 
