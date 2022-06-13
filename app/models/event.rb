@@ -20,8 +20,16 @@ class Event < ApplicationRecord
     validates :title
     validates :content
     validates :held_at
+    validates :gender_ratio
   end
   validate :check_with_half_and_participants
+  validate :participant_number
+
+  def participant_number
+    if  number_of_participants != nil && number_of_participants < 1
+      errors.add(:number_of_participants, '参加人数は1人以上に設定してください')
+    end
+  end
 
   def check_with_half_and_participants
     if gender_ratio == "half" && number_of_participants == nil
