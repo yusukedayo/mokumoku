@@ -3,7 +3,7 @@
 class Events::AttendancesController < ApplicationController
   def create
     @event = Event.find(params[:event_id])
-    if @event.check
+    if @event.check(current_user)
       redirect_back(fallback_location: root_path, success: '参加に失敗しました 性別欄を確認してください')
     else
       event_attendance = current_user.attend(@event)

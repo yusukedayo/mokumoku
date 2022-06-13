@@ -30,7 +30,31 @@ class Event < ApplicationRecord
     !past?
   end
 
-  def check 
-    self.gender_ratio != "not_set" && self.user.gender == "not_set"
+  def check(user)
+    check_set_gender(user) || check_gender_man(user) || check_gender_woman(user)
+  end
+
+  def check_set_gender(user)
+    self.gender_ratio != "not_set" && user.gender == "not_set"
+  end
+
+  def check_gender_man(user)
+    self.gender_ratio == "only_woman" && user.gender == "man"
+  end
+
+  def check_gender_woman(user)
+    self.gender_ratio == "only_man" && user.gender == "woman"
+  end
+
+  def check_participants?
+    if number_of_participants <= attendees.size
+      false
+    elsif gender_ratio == "half" && number_of_participants / 2 <= attendees.where(gender: "man").size
+      false
+    elsif gender_ratio == "half" && number_of_participants / 2 <= attendees.where(gender: "woman").size
+      false
+    else
+      true
+    end
   end
 end
