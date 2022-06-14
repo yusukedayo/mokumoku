@@ -62,12 +62,16 @@ class Event < ApplicationRecord
   end
 
   def check_participants?
-    if number_of_participants <= attendees.size
-      false
-    elsif gender_ratio == "half" && number_of_participants / 2 <= attendees.where(gender: "man").size
-      false
-    elsif gender_ratio == "half" && number_of_participants / 2 <= attendees.where(gender: "woman").size
-      false
+    if number_of_participants
+      if number_of_participants <= attendees.size
+        false
+      elsif gender_ratio == "half" && number_of_participants / 2 <= attendees.where(gender: "man").size
+        false
+      elsif gender_ratio == "half" && number_of_participants / 2 <= attendees.where(gender: "woman").size
+        false
+      else
+        true
+      end
     else
       true
     end
