@@ -14,7 +14,7 @@ class Event < ApplicationRecord
   scope :future, -> { where('held_at > ?', Time.current) }
   scope :past, -> { where('held_at <= ?', Time.current) }
 
-  enum gender_ratio: { not_set: 0, only_woman: 1, only_man: 2, half: 3}
+  enum gender_ratio: { not_set: 0, only_woman: 1, only_man: 2, half: 3 }
 
   with_options presence: true do
     validates :title
@@ -26,13 +26,13 @@ class Event < ApplicationRecord
   validate :participant_number
 
   def participant_number
-    if  number_of_participants != nil && number_of_participants < 1
+    if !number_of_participants.nil? && number_of_participants < 1
       errors.add(:number_of_participants, '参加人数は1人以上に設定してください')
     end
   end
 
   def check_with_half_and_participants
-    if gender_ratio == "half" && number_of_participants == nil
+    if gender_ratio == 'half' && number_of_participants.nil?
       errors.add(:number_of_participants, '男女半々を選択した場合は参加人数を入力してください')
     end
   end
@@ -50,24 +50,24 @@ class Event < ApplicationRecord
   end
 
   def check_set_gender(user)
-    self.gender_ratio != "not_set" && user.gender == "not_set"
+    gender_ratio != 'not_set' && user.gender == 'not_set'
   end
 
   def check_gender_man(user)
-    self.gender_ratio == "only_woman" && user.gender == "man"
+    gender_ratio == 'only_woman' && user.gender == 'man'
   end
 
   def check_gender_woman(user)
-    self.gender_ratio == "only_man" && user.gender == "woman"
+    gender_ratio == 'only_man' && user.gender == 'woman'
   end
 
   def check_participants?
     if number_of_participants
       if number_of_participants <= attendees.size
         false
-      elsif gender_ratio == "half" && number_of_participants / 2 <= attendees.where(gender: "man").size
+      elsif gender_ratio == 'half' && number_of_participants / 2 <= attendees.where(gender: 'man').size
         false
-      elsif gender_ratio == "half" && number_of_participants / 2 <= attendees.where(gender: "woman").size
+      elsif gender_ratio == 'half' && number_of_participants / 2 <= attendees.where(gender: 'woman').size
         false
       else
         true

@@ -59,9 +59,9 @@ group :development do
   gem 'spring'
 
   gem 'letter_opener_web'
+  gem 'pry-byebug'
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
-  gem 'pry-byebug'
 end
 
 group :production do
