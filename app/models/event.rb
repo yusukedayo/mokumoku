@@ -45,7 +45,7 @@ class Event < ApplicationRecord
     !past?
   end
 
-  def check_participants?
+  def can_be_participanted?
     if number_of_participants
       if check_all_number || check_man_number || check_woman_number
         false
@@ -57,15 +57,15 @@ class Event < ApplicationRecord
     end
   end
 
-  def check_all_number
+  def confirm_attendance_limit
     number_of_participants <= attendees.size
   end
 
-  def check_man_number
+  def confirm_man_attendance_limit
     gender_ratio == 'half' && number_of_participants / 2 <= attendees.where(gender: 'man').size
   end
 
-  def check_woman_number
+  def confirm_woman_attendance_limit
     gender_ratio == 'half' && number_of_participants / 2 <= attendees.where(gender: 'woman').size
   end
 end
