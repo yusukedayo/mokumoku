@@ -45,22 +45,6 @@ class Event < ApplicationRecord
     !past?
   end
 
-  def check(user)
-    check_set_gender(user) || check_gender_man(user) || check_gender_woman(user)
-  end
-
-  def check_set_gender(user)
-    gender_ratio != 'not_set' && user.gender == 'not_set'
-  end
-
-  def check_gender_man(user)
-    gender_ratio == 'only_woman' && user.gender == 'man'
-  end
-
-  def check_gender_woman(user)
-    gender_ratio == 'only_man' && user.gender == 'woman'
-  end
-
   def check_participants?
     if number_of_participants
       if check_all_number || check_man_number || check_woman_number
