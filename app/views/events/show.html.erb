@@ -93,15 +93,14 @@
                               data: { confirm: 'キャンセルします' }
                   %>
                 <% else %>
-                  <% if @event.check_participants? %>
+                  <% if @event.can_be_participanted? %>
                     <%= link_to "参加する",
                               event_attendance_url(@event),
                               class: 'btn btn-primary',
                               method: :post,
-                              data: { confirm: '申し込みます' }
-                    %>
+                              data: { confirm: '申し込みます' } %>
                   <% else %>
-                    満員です
+                    <%= @event.decorate.show_reason_cannot_attend %>
                   <% end %>
                 <% end %>
               <% end %>
