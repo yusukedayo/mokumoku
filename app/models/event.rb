@@ -14,10 +14,27 @@ class Event < ApplicationRecord
   scope :future, -> { where('held_at > ?', Time.current) }
   scope :past, -> { where('held_at <= ?', Time.current) }
 
+  enum gender_ratio: { not_set: 0, only_woman: 1, only_man: 2, half: 3 }
+
   with_options presence: true do
     validates :title
     validates :content
     validates :held_at
+    validates :gender_ratio
+  end
+  validate :check_with_half_and_participants
+  validate :participant_number
+
+  def participant_number
+    return unless !number_of_participants.nil? && number_of_participants < 1
+
+    errors.add(:number_of_participants, '参加人数は1人以上に設定してください')
+  end
+
+  def check_with_half_and_participants
+    return unless gender_ratio == 'half' && number_of_participants.nil?
+
+    errors.add(:number_of_participants, '男女半々を選択した場合は参加人数を入力してください')
   end
 
   def past?
@@ -26,5 +43,29 @@ class Event < ApplicationRecord
 
   def future?
     !past?
+  end
+
+  def can_be_participanted?
+    if number_of_participants
+      if confirm_attendance_limit || confirm_man_attendance_limit || confirm_woman_attendance_limit
+        false
+      else
+        true
+      end
+    else
+      true
+    end
+  end
+
+  def confirm_attendance_limit
+    number_of_participants <= attendees.size
+  end
+
+  def confirm_man_attendance_limit
+    gender_ratio == 'half' && (number_of_participants + 1) / 2 <= attendees.where(gender: 'man').size
+  end
+
+  def confirm_woman_attendance_limit
+    gender_ratio == 'half' && (number_of_participants + 1) / 2 <= attendees.where(gender: 'woman').size
   end
 end

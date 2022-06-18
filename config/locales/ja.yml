@@ -6,3 +6,14 @@ ja:
         commented_to_event: あなたのイベントにコメントがあった時
         attended_to_event: あなたのイベントに参加申し込みがあった時
         liked_event: あなたのイベントにいいねがついた時
+    user:
+      gender:
+        not_set: 未設定
+        woman: 女性
+        man: 男性
+    event:
+      gender_ratio:
+        not_set: 誰でも参加可能
+        only_woman: 女性限定
+        only_man: 男性限定
+        half: 男女半々
