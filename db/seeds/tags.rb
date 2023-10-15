@@ -1,0 +1,5 @@
+Tag.find_or_create_by!(name: 'Ruby')
+Tag.find_or_create_by!(name: 'Rails')
+Tag.find_or_create_by!(name: 'PHP')
+Tag.find_or_create_by!(name: 'iOS')
+Tag.find_or_create_by!(name: '駆け出しエンジニア')
