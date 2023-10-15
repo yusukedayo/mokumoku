@@ -10,6 +10,8 @@ class Event < ApplicationRecord
   has_many :attendees, through: :attendances, class_name: 'User', source: :user
   has_many :bookmarks, dependent: :destroy
   has_one_attached :thumbnail
+  has_many :event_tags
+  has_many :tags, through: :event_tags
 
   scope :future, -> { where('held_at > ?', Time.current) }
   scope :past, -> { where('held_at <= ?', Time.current) }
@@ -26,5 +28,13 @@ class Event < ApplicationRecord
 
   def future?
     !past?
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["title", "content", "held_at", "prefecture_id"]  # 検索したい属性を列挙してください
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["tags", "prefecture"]  # 検索したい関連を列挙してください
   end
 end
