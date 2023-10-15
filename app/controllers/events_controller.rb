@@ -5,6 +5,7 @@ class EventsController < ApplicationController
     @q = Event.future.ransack(params[:q])
     @events = @q.result(distinct: true).includes(:bookmarks, :prefecture, user: { avatar_attachment: :blob })
                 .order(created_at: :desc).page(params[:page])
+    @tag_names=Tag.all
   end
 
   def future
@@ -30,6 +31,7 @@ class EventsController < ApplicationController
   def create
     @event = current_user.events.build(event_params)
     if @event.save
+      @event.tag_ids = params[:event][:tag_ids]
       User.all.find_each do |user|
         NotificationFacade.created_event(@event, user)
       end
@@ -60,6 +62,6 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:title, :content, :held_at, :prefecture_id, :thumbnail)
+    params.require(:event).permit(:title, :content, :held_at, :prefecture_id, :thumbnail, tag_ids: [])
   end
 end

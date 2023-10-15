@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 <nav class="navbar navbar-expand-lg navbar-default">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">MOKUMOKU</a>
@@ -7,6 +8,37 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <%= search_form_for @q || Event.ransack(params[:q]), url: @search_path || events_path, class: 'd-flex align-items-center' do |f| %>
         <%= f.search_field :title_or_content_cont, class: 'form-control form-control-sm me-2', placeholder: 'もくもく会検索' %>
+        
+        <!-- モーダルトリガーボタン -->
+        <a href="#" data-bs-toggle="modal" data-bs-target="#tagModal">
+          <i class="fas fa-tags"></i>
+        </a>
+
+        <!-- タグ選択モーダル -->
+        <div class="modal fade" id="tagModal" tabindex="-1" role="dialog" aria-labelledby="tagModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="tagModalLabel">タグを選択</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <%# タグの一覧を表示し、チェックボックスで選択させる %>
+                <% Tag.all.each do |tag| %>
+                  <%= f.check_box :tags_id_eq_any, { multiple: true, checked: tag[:checked], disabled: tag[:disabled], include_hidden: false }, tag[:id] %>
+                  <tag><%= tag.name %></tag>
+                <% end %>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">選択</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <%= f.submit '検索', class: 'btn btn-outline-success btn-sm'  %>
       <% end %>
       <% if logged_in? %>
