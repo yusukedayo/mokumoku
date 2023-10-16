@@ -7,6 +7,30 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <%= search_form_for @q || Event.ransack(params[:q]), url: @search_path || events_path, class: 'd-flex align-items-center' do |f| %>
         <%= f.search_field :title_or_content_cont, class: 'form-control form-control-sm me-2', placeholder: 'もくもく会検索' %>
+        <!-- モーダルの呼び出しボタン -->
+        <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#tagModal">
+          タグ
+        </button>
+        <!-- モーダルのコンテンツ -->
+        <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="tagModalLabel">タグ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <% ActsAsTaggableOn::Tag.all.each do |tag| %>
+                  <%= f.check_box :tags_name_in, { multiple: true }, tag.name, nil %> <%= tag.name %>
+                <% end %>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                <%= f.submit '適用', class: 'btn btn-primary' %>
+              </div>
+            </div>
+          </div>
+        </div>
         <%= f.submit '検索', class: 'btn btn-outline-success btn-sm'  %>
       <% end %>
       <% if logged_in? %>
