@@ -38,9 +38,6 @@ gem 'factory_bot_rails'
 gem 'faker'
 
 gem 'enum_help'
-gem 'acts-as-taggable-on'
-gem 'jquery-ui-rails'
-gem 'jquery-rails'
 
 group :development, :test do
   # Use sqlite3 as the database for Active Record

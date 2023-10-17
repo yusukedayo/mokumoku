@@ -5,11 +5,6 @@
 
 import Rails from "@rails/ujs"
 import * as ActiveStorage from "@rails/activestorage"
-import { TurboLinks } from "turbolinks" // 追記
-import $ from 'jquery' // 追記
-import 'jquery-ui/ui/widgets/autocomplete.js'; // 追記
-import 'bootstrap'; // 追記
-import 'tag-it'; // 追記
 import "channels"
 import "calendar.js"
 import "theme.js"
