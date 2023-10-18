@@ -58,6 +58,14 @@ class EventsController < ApplicationController
     end
   end
 
+  def tagged
+    @tag = Tag.find_by(name: params[:tag_name])
+    @q = @tag.events.ransack(params[:q]) # 検索クエリを取得
+    @events = @q.result(distinct: true).order(created_at: :desc).page(params[:page]).per(10)
+    @tag_names = Tag.all
+    render 'index' # index テンプレートを表示
+  end
+
   private
 
   def event_params
