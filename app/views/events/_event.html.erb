@@ -20,6 +20,12 @@
         </div>
       </div>
       <hr />
+      <div class="tags">
+        <% event.tags.each do |tag| %>
+          <a class="badge badge-primary" href="<%= tagged_events_path(tag_name: tag.name) %>"><%= tag.name %></a>
+        <% end %>
+      </div>
+      <hr />
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-3">
           <%= image_tag event.user.decorate.avatar, class: 'avatar-sm rounded-circle' %>
