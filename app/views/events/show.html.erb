@@ -57,7 +57,7 @@
         <div class="card-body">
           <div class="d-flex align-items-center gap-3 mb-3">
             <%= image_tag @event.user.decorate.avatar, class: 'rounded-circle avatar-lg' %>
-            <%= @event.user.name %>
+            <%= link_to @event.user.name, user_path(@event.user) %>
           </div>
           <div class="p-3 bg-light">
             イベント数
@@ -112,7 +112,11 @@
         </div>
         <div class="card-body">
            <ul class="list-unstyled">
-             <%= render partial: 'events/attendee', collection: @event.attendees %>
+            <% @event.attendees.each do |attendee| %>
+              <li>
+                <%= link_to attendee.name, user_path(attendee) %>
+              </li>
+            <% end %>
            </ul>
         </div>
       </div>
