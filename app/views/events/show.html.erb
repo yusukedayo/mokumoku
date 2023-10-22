@@ -112,7 +112,11 @@
         </div>
         <div class="card-body">
            <ul class="list-unstyled">
-             <%= render partial: 'events/attendee', collection: @event.attendees %>
+            <% @event.attendees.each do |attendee| %>
+              <li>
+                <%= link_to attendee.name, user_path(attendee) %>
+              </li>
+            <% end %>
            </ul>
         </div>
       </div>
