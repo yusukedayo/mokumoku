@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  before_action :set_user, only: [:show, :follows, :followers]
   def new
     @user = User.new
   end
@@ -17,21 +18,24 @@ class UsersController < ApplicationController
   end
 
   def show
+  end
+
+  def follows
+    @users = @user.following_users
+  end
+  
+  # フォロワー一覧
+  def followers
+    @follower_users = @user.follower_users
+  end
+
+  private
+
+  def set_user
     @user = User.find(params[:id])
   end
 
   def user_params
     params.require(:user).permit(:email, :name, :password, :password_confirmation)
-  end
-
-  def follows
-    user = User.find(params[:id])
-    @users = user.following_users
-  end
-  
-  # フォロワー一覧
-  def followers
-    user = User.find(params[:id])
-    @user = user.follower_users
   end
 end
