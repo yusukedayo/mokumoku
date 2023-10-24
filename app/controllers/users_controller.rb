@@ -5,6 +5,22 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  def show
+    @user = User.find(params[:id])
+  end
+
+  def follow
+    user = User.find(params[:id])
+    current_user.follow(user)
+    redirect_to user
+  end
+
+  def unfollow
+    user = User.find(params[:id])
+    current_user.unfollow(user)
+    redirect_to user
+  end
+
   def create
     @user = User.new(user_params)
     if @user.save
